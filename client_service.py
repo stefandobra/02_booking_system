@@ -83,3 +83,12 @@ def add_client():
         source=source
     )
 
+def view_clients(clients: list):
+    if clients:
+        i = 1
+        print(f"\n--- Client list ---")
+        for client in clients:
+            print(f"{i}. {client.first_name} {client.last_name} p: {client.phone_number} e: {client.email_address}")
+            i += 1
+    else:
+        print("No clients saved!")
