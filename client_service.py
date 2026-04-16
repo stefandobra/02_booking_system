@@ -58,7 +58,7 @@ def add_client():
     print("\n--- Please enter new client details ---")
     first_name = input("First Name: ")
     last_name = input("Last name: ")
-    phone_number = input("Phone numner: ")
+    phone_number = input("Phone number: ")
     email_address = input("Email address: ")
     
     while True:
@@ -98,15 +98,17 @@ def add_client():
         print("No source entered!")
 
     while True:
-        option4 = input("Do you want to add client ntoes (Y/N): ").strip().upper()
+        option4 = input("Do you want to add client notes (Y/N): ").strip().upper()
         if option4 in ["Y", "N"]:
             break
         else:
             print("Invalid input. Please enter 'Y' or 'N'.")
     if option4 == "Y":
-        notes = input("Notes: ")
+        notes = []
+        note_to_add = input("Notes: ")
+        notes.append(note_to_add)
     else:
-        notes = None
+        notes = []
         print("No notes entered!")
 
     return Client(
@@ -125,11 +127,9 @@ def add_client():
 
 def view_clients(clients: list):
     if clients:
-        i = 1
         print(f"\n--- Client list ---")
-        for client in clients:
-            print(f"{i}. {client.first_name} {client.last_name} p: {client.phone_number} e: {client.email_address}")
-            i += 1
+        for i, client in enumerate(clients, start=1):
+            print(f"{i}. {client.first_name} {client.last_name} p: {client.phone_number} e: {client.email_address} notes: {len(client.notes)}")
     else:
         print("No clients saved!")
 
@@ -155,10 +155,14 @@ def search_client(clients: list):
             if option == "1":
                 if client.email_address == search_for:
                     print(f"{client.first_name} {client.last_name} p: {client.phone_number} e: {client.email_address}")
+                    for j, note in enumerate(client.notes, start=1):
+                        print(f"Note {j}: {note}")
                     return client
             else:
                 if client.phone_number == search_for:
                     print(f"{client.first_name} {client.last_name} p: {client.phone_number} e: {client.email_address}")
+                    for j, note in enumerate(client.notes, start=1):
+                        print(f"Note {j}: {note}")
                     return client
         print(f"No client found for {search_for}")
     else:
@@ -168,16 +172,16 @@ def update_client(clients: list):
     client_to_update = search_client(clients)
 
     if client_to_update:
-        print(f"--- Update Client {client_to_update.first_name} {client_to_update.last_name} ---")
+        print(f"\n--- Update Client {client_to_update.first_name} {client_to_update.last_name} ---")
         print("What do you want to update for this client?")
         print(f"1. First name\n2. Last name\n3. Phone number\n4. Email address\n5. Notes\n6. Gender\n7. Date of birth\n8. Source\n9. Cancel")
 
         while True:
-            option = input("Select option: ").strip()
+            option = input("\nSelect option: ").strip()
             if option in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 break
             else:
-                print("Invalid selection. Plese enter 1-9")
+                print("Invalid selection. Please enter 1-9")
             
         if option == "1":
             new_first_name = input("Enter new first name: ")
@@ -192,7 +196,7 @@ def update_client(clients: list):
             new_email_address = input("Enter new email address: ")
             client_to_update.email_address = new_email_address
         elif option == "5":
-            return
+            client_notes(client_to_update)
         elif option == "6":
             new_gender = validate_gender()
             client_to_update.gender = new_gender
@@ -219,6 +223,85 @@ def delete_client(clients: list):
         clients.remove(client_to_delete)
         save_clients(clients)
         print(f"--- Client {client_to_delete.first_name} {client_to_delete.last_name} deleted---")
+
+def view_notes(client: Client):
+    if client.notes:
+            print(f"\n--- {client.first_name} {client.last_name} Notes")
+            notes = client.notes
+            for i, note in enumerate(notes, start=1):
+                print(f"{i} {note}")
+    else:
+        print("Client has no notes")
+
+def add_note(client: Client):
+    new_note = input("New note: ")
+    client.notes.append(new_note)
+    print(f"\n--- New note added for {client.first_name} {client.last_name}")
+
+def delete_note(client: Client):
+    if client.notes:
+        view_notes(client)
+        while True:
+            note_to_delete = input("Select note to delete: ").strip()
+            try:
+                note_to_delete_int = int(note_to_delete)
+                if note_to_delete_int > len(client.notes):
+                    print(f"Note does't exist please select a note that exist (1-{len(client.notes)})")
+                else:
+                    client.notes.pop(note_to_delete_int-1)
+                    print(f"Client note deleted")
+                    break
+            except ValueError:
+                print(f"Invalid selection. Please use integer numebers (1-{len(client.notes)})")
+    else:
+        print("Client has no notes")
+
+def delete_all_notes(client: Client):
+    if client.notes:
+        view_notes(client)
+        while True:
+            option = input(f"\nAre you sure you want to delete all notes for {client.first_name} {client.last_name}? (Y/N) ").strip().upper()
+            if option in ["Y", "N"]:
+                break
+            else:
+                print("Invalid input. Please enter 'Y' or 'N'.")
+        if option == "Y":
+            client.notes.clear()
+            print(f"All notes for {client.first_name} {client.last_name} were deleted")
+        else:
+            print("Deletion cancelled")
+        
+    else:
+        print("Client has no notes")
+
+def client_notes(client_to_update: Client):
+    print(f"1. View notes\n2. Add note\n3. Delete note\n4. Delete all notes\n5. Cancel")
+
+    while True:
+        option = input("\nSelect option: ").strip()
+        if option in ["1", "2", "3", "4", "5"]:
+            break
+        else:
+            print("Invalid selection. Please enter 1-5")
+
+    if option == "1":
+        view_notes(client_to_update)
+
+    elif option == "2":
+        add_note(client_to_update)
+
+    elif option == "3":
+        delete_note(client_to_update)
+
+    elif option == "4":
+        delete_all_notes(client_to_update)
+        
+    elif option == "5":
+        print("Client notes update cancelled")
+        return
+
+
+
 
 
     
