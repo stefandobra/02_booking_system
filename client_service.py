@@ -202,6 +202,15 @@ def update_client(clients: list):
     else:
         return
     
+def delete_client(clients: list):
+    client_to_delete = search_client(clients)
+
+    if client_to_delete:
+        print(f"--- Deleting client {client_to_delete.first_name} {client_to_delete.last_name} ---")
+        clients.remove(client_to_delete)
+        save_clients(clients)
+        print(f"--- Client {client_to_delete.first_name} {client_to_delete.last_name} deleted---")
+
 
     
 

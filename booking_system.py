@@ -1,5 +1,5 @@
 from client import Client
-from client_service import add_client, save_clients, load_clients, update_client, search_client, view_clients
+from client_service import add_client, save_clients, load_clients, update_client, search_client, view_clients, delete_client
 
 
 clients = []
@@ -32,7 +32,7 @@ while True:
     elif option == "4":
         update_client(clients)
     elif option == "5":
-        continue
+        delete_client(clients)
     elif option == "0":
         print("Have a good day!")
         save_clients(clients)
