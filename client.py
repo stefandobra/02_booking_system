@@ -7,10 +7,10 @@ class Client:
         self.last_name = last_name
         self.phone_number = phone_number
         self.email_address = email_address
-        self.notes = notes
-        self.intake_forms = intake_forms
-        self.upcoming_appts = upcoming_appts
-        self.past_appts = past_appts
+        self.notes = notes if notes is not None else []
+        self.intake_forms = intake_forms if intake_forms is not None else []
+        self.upcoming_appts = upcoming_appts if upcoming_appts is not None else []
+        self.past_appts = past_appts if past_appts is not None else []
         self.gender = gender
         self.dob = dob
         self.source = source
