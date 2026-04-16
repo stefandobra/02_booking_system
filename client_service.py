@@ -32,6 +32,28 @@ def load_clients():
         print("Invalid JSON syntax:", error)
         return []
 
+def validate_dob():
+    while True:
+            dob_str = input("Date of birth (DD/MM/YYYY): ")
+            try:
+                dob = datetime.datetime.strptime(dob_str, '%d/%m/%Y').date()
+                
+                break
+            except ValueError:
+                print("Invalid date format. Please use DD/MM/YYYY.")
+    return dob.isoformat()
+
+def validate_gender():
+    while True:
+            gender_input = input("Gender (F/M): ").strip().upper()
+            if gender_input in ["F", "M"]:
+                gender = gender_input
+                break
+            else:
+                print("Invalid input. Please enter 'F' or 'M'.")
+    return gender
+
+
 def add_client():
     print("\n--- Please enter new client details ---")
     first_name = input("First Name: ")
@@ -46,13 +68,7 @@ def add_client():
         else:
             print("Invalid input. Please enter 'Y' or 'N'.")
     if option1 == "Y":
-        while True:
-            dob_str = input("Date of birth (DD/MM/YYYY): ")
-            try:
-                dob = datetime.datetime.strptime(dob_str, '%d/%m/%Y').date()
-                break
-            except ValueError:
-                print("Invalid date format. Please use DD/MM/YYYY.")          
+        dob = validate_dob()              
     else:
         dob = None
         print("No date of birth entered!")
@@ -64,17 +80,10 @@ def add_client():
         else:
             print("Invalid input. Please enter 'Y' or 'N'.")
     if option2 == "Y":
-        while True:
-            gender_input = input("Gender (F/M): ").strip().upper()
-            if gender_input in ["F", "M"]:
-                gender = gender_input
-                break
-            else:
-                print("Invalid input. Please enter 'F' or 'M'.")
+        gender = validate_gender()      
     else:
         gender = None
         print("No gender entered!")
-
 
     while True:
         option3 = input("Do you want to add client source (Y/N): ").strip().upper()
@@ -185,10 +194,10 @@ def update_client(clients: list):
         elif option == "5":
             return
         elif option == "6":
-            new_gender = input("Enter new gender: ")
+            new_gender = validate_gender()
             client_to_update.gender = new_gender
         elif option == "7":
-            new_dob = input("Enter new date of birth: ")
+            new_dob = validate_dob()
             client_to_update.dob = new_dob
         elif option == "8":
             new_source = input("Enter new source: ")
