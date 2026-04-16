@@ -219,17 +219,26 @@ def delete_client(clients: list):
     client_to_delete = search_client(clients)
 
     if client_to_delete:
-        print(f"--- Deleting client {client_to_delete.first_name} {client_to_delete.last_name} ---")
-        clients.remove(client_to_delete)
-        save_clients(clients)
-        print(f"--- Client {client_to_delete.first_name} {client_to_delete.last_name} deleted---")
+        while True:
+            option = input(f"\nAre you sure you want to delete {client_to_delete.first_name} {client_to_delete.last_name}? (Y/N) ").strip().upper()
+            if option in ["Y", "N"]:
+                break
+            else:
+                print("Invalid input. Please enter 'Y' or 'N'.")
+        if option == "Y":
+            print(f"\n--- Deleting client {client_to_delete.first_name} {client_to_delete.last_name} ---")
+            clients.remove(client_to_delete)
+            save_clients(clients)
+            print(f"\n--- Client {client_to_delete.first_name} {client_to_delete.last_name} deleted---")
+        else:
+            print(f"Deletion of client {client_to_delete.first_name} {client_to_delete.last_name} cancelled")
 
 def view_notes(client: Client):
     if client.notes:
-            print(f"\n--- {client.first_name} {client.last_name} Notes")
-            notes = client.notes
-            for i, note in enumerate(notes, start=1):
-                print(f"{i} {note}")
+        print(f"\n--- {client.first_name} {client.last_name} Notes")
+        notes = client.notes
+        for i, note in enumerate(notes, start=1):
+            print(f"{i} {note}")
     else:
         print("Client has no notes")
 
