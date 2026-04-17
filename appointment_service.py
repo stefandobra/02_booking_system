@@ -34,7 +34,7 @@ def load_appointments():
         print("Invalid JSON syntax:", error)
         return []
 
-def add_appointment(clients):
+def add_appointment(clients: list):
     client_to_add_appt = search_client(clients)
 
     if not client_to_add_appt:
@@ -66,6 +66,18 @@ def validate_datetime():
             print("Invalid date and time format. Please use (DD/MM/YYYY HH:mm).")
     return date_time.isoformat()
 
+def view_all_appointments(appointments: list, clients: list):
+    if not appointments:
+        print("\nNo appointments saved")
+        return
+    print("\n--- Appointment list ---")
+    for i, appt in enumerate(appointments, start=1):
+        client_id = appt.client_id
+        date_time = datetime.datetime.strptime(appt.datetime, '%Y-%m-%dT%H:%M:%S')
+        date_and_time = datetime.datetime.strftime(date_time, 'Day: %d/%m/%Y Time: %H:%M')
+        for client in clients:
+            if client.id == client_id:
+                print(f"{i}. {date_and_time} - {client.first_name} {client.last_name} - {appt.treatment} with {appt.therapist_name}")
 
 
 
