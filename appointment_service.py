@@ -34,7 +34,7 @@ def load_appointments():
         print("Invalid JSON syntax:", error)
         return []
 
-def add_appointment(clients, appointments):
+def add_appointment(clients):
     client_to_add_appt = search_client(clients)
 
     if not client_to_add_appt:
@@ -46,6 +46,9 @@ def add_appointment(clients, appointments):
     date_time = validate_datetime()
     treatment = input("Please enter treatment required: ")
     
+    print(f"\nNew appointment added for {client_to_add_appt.first_name} {client_to_add_appt.last_name}")
+
+
     return Appointment(
         client_id = client_id,
         therapist_name = therapist_name,
