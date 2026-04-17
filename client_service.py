@@ -34,23 +34,23 @@ def load_clients():
 
 def validate_dob():
     while True:
-            dob_str = input("Date of birth (DD/MM/YYYY): ")
-            try:
-                dob = datetime.datetime.strptime(dob_str, '%d/%m/%Y').date()
-                
-                break
-            except ValueError:
-                print("Invalid date format. Please use DD/MM/YYYY.")
+        dob_str = input("Date of birth (DD/MM/YYYY): ")
+        try:
+            dob = datetime.datetime.strptime(dob_str, '%d/%m/%Y').date()
+            
+            break
+        except ValueError:
+            print("Invalid date format. Please use DD/MM/YYYY.")
     return dob.isoformat()
 
 def validate_gender():
     while True:
-            gender_input = input("Gender (F/M): ").strip().upper()
-            if gender_input in ["F", "M"]:
-                gender = gender_input
-                break
-            else:
-                print("Invalid input. Please enter 'F' or 'M'.")
+        gender_input = input("Gender (F/M): ").strip().upper()
+        if gender_input in ["F", "M"]:
+            gender = gender_input
+            break
+        else:
+            print("Invalid input. Please enter 'F' or 'M'.")
     return gender
 
 
