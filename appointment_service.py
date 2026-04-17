@@ -1,5 +1,7 @@
 from appointment import Appointment
 import json
+from client_service import search_client
+import datetime
 
 def save_appointments(appointments: list): 
     appointments_dict = []
@@ -31,4 +33,38 @@ def load_appointments():
     except json.JSONDecodeError as error:
         print("Invalid JSON syntax:", error)
         return []
+
+def add_appointment(clients, appointments):
+    client_to_add_appt = search_client(clients)
+
+    if not client_to_add_appt:
+        return
+
+    print(f"\n--- Add appointment for client {client_to_add_appt.first_name} {client_to_add_appt.last_name} ---")
+    client_id = client_to_add_appt.id
+    therapist_name = input("Please enter therapist name: ")
+    date_time = validate_datetime()
+    treatment = input("Please enter treatment required: ")
+    
+    return Appointment(
+        client_id = client_id,
+        therapist_name = therapist_name,
+        datetime = date_time,
+        treatment = treatment
+        )
+
+def validate_datetime():
+    while True:
+        date_time_str = input("Please enter date and time for appointment (DD/MM/YYYY HH:mm): ")
+        try:
+            date_time = datetime.datetime.strptime(date_time_str, '%d/%m/%Y %H:%M')
+            break
+        except ValueError:
+            print("Invalid date and time format. Please use (DD/MM/YYYY HH:mm).")
+    return date_time.isoformat()
+
+
+
+
+
     
