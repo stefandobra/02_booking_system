@@ -27,7 +27,7 @@ def load_appointments():
         return appointments_from_file
     
     except FileNotFoundError:
-        print("No saved data found, starting fresh")
+        print("No saved appointments, starting fresh")
         return []
     
     except json.JSONDecodeError as error:
@@ -78,6 +78,27 @@ def view_all_appointments(appointments: list, clients: list):
         for client in clients:
             if client.id == client_id:
                 print(f"{i}. {date_and_time} - {client.first_name} {client.last_name} - {appt.treatment} with {appt.therapist_name}")
+
+def view_client_appointments(appointments: list, clients: list):
+    if not appointments:
+        print("\nNo appointments saved")
+        return
+    found = False
+    i = 1
+    client_to_view = search_client(clients)
+    if client_to_view:
+        client_id = client_to_view.id
+        for appt in appointments:
+            if client_id == appt.client_id:
+                if not found:
+                    print(f"\n--- Appointments for {client_to_view.first_name} {client_to_view.last_name} ---") 
+                found = True
+                date_time = datetime.datetime.strptime(appt.datetime, '%Y-%m-%dT%H:%M:%S')
+                date_and_time = datetime.datetime.strftime(date_time, 'Day: %d/%m/%Y Time: %H:%M')
+                print(f"{i}. {date_and_time} - {client_to_view.first_name} {client_to_view.last_name} - {appt.treatment} with {appt.therapist_name}")
+                i += 1
+        if not found:
+            print(f"\n--- No appointments for {client_to_view.first_name} {client_to_view.last_name}")
 
 
 

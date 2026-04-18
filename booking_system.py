@@ -1,7 +1,7 @@
 from client import Client
 from client_service import add_client, save_clients, load_clients, update_client, search_client, view_clients, delete_client
 from appointment import Appointment
-from appointment_service import save_appointments, load_appointments, add_appointment, view_all_appointments
+from appointment_service import save_appointments, load_appointments, add_appointment, view_all_appointments, view_client_appointments
 
 clients = []
 
@@ -14,6 +14,7 @@ def display_menu():
     print("5. Delete client")
     print("6. Add appointment")
     print("7. View all appointments")
+    print("8. View client appointments")
     print("0. Exit")
 
         
@@ -45,6 +46,8 @@ while True:
             print("\nClient not found")  
     elif option == "7":
         view_all_appointments(appointments, clients)
+    elif option == "8":
+        view_client_appointments(appointments, clients)
     elif option == "0":
         print("Have a good day!")
         save_clients(clients)
