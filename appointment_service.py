@@ -45,23 +45,29 @@ def add_appointment(clients: list):
     therapist_name = input("Please enter therapist name: ")
     date_time = validate_datetime()
     treatment = input("Please enter treatment required: ")
-    
-    print(f"\nNew appointment added for {client_to_add_appt.first_name} {client_to_add_appt.last_name}")
 
-
-    return Appointment(
+    appointment = Appointment(
         client_id = client_id,
         therapist_name = therapist_name,
         datetime = date_time,
         treatment = treatment
         )
 
+    client_to_add_appt.upcoming_appts.append(appointment.__dict__)
+    
+    print(f"\nNew appointment added for {client_to_add_appt.first_name} {client_to_add_appt.last_name}")
+
+    return appointment
+
 def validate_datetime():
     while True:
         date_time_str = input("Please enter date and time for appointment (DD/MM/YYYY HH:mm): ")
         try:
             date_time = datetime.datetime.strptime(date_time_str, '%d/%m/%Y %H:%M')
-            break
+            if date_time > datetime.datetime.today():
+                break
+            else:
+                print(f"\nInvalid date. Please enter future date!")
         except ValueError:
             print("Invalid date and time format. Please use (DD/MM/YYYY HH:mm).")
     return date_time.isoformat()
