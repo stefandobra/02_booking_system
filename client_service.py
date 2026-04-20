@@ -2,6 +2,7 @@ import datetime
 from client import Client
 import json
 
+
 def save_clients(clients):
     clients_dict=[]
     for client in clients:
@@ -221,15 +222,14 @@ def update_client(clients: list):
         elif option == "9":
             print("Client update cancelled")
             return
-        print(f"--- Client {client_to_update.first_name} {client_to_update.last_name} updated---")
+        print(f"--- Client {client_to_update.first_name} {client_to_update.last_name} updated ---")
         save_clients(clients)
         
     else:
         return
     
-def delete_client(clients: list):
-    client_to_delete = search_client(clients)
-
+def delete_client(appointments: list, clients: list):
+    client_to_delete = search_client(clients)    
     if client_to_delete:
         while True:
             option = input(f"\nAre you sure you want to delete {client_to_delete.first_name} {client_to_delete.last_name}? (Y/N) ").strip().upper()
@@ -239,9 +239,12 @@ def delete_client(clients: list):
                 print("Invalid input. Please enter 'Y' or 'N'.")
         if option == "Y":
             print(f"\n--- Deleting client {client_to_delete.first_name} {client_to_delete.last_name} ---")
+            new_appointment_list = [appt for appt in appointments if appt.client_id != client_to_delete.id]  
             clients.remove(client_to_delete)
             save_clients(clients)
-            print(f"\n--- Client {client_to_delete.first_name} {client_to_delete.last_name} deleted---")
+            
+            print(f"\n--- Client {client_to_delete.first_name} {client_to_delete.last_name} deleted ---")
+            return new_appointment_list
         else:
             print(f"Deletion of client {client_to_delete.first_name} {client_to_delete.last_name} cancelled")
 
@@ -320,21 +323,3 @@ def client_notes(client_to_update: Client):
     elif option == "5":
         print("Client notes update cancelled")
         return
-
-
-
-
-
-    
-
-
-
-
-
-
-
-    
-
-    
-
-

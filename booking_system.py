@@ -1,7 +1,7 @@
 from client import Client
 from client_service import add_client, save_clients, load_clients, update_client, search_client, view_clients, delete_client
 from appointment import Appointment
-from appointment_service import view_client_past, view_client_upcoming, reschedule_appointment, save_appointments, load_appointments, add_appointment, view_all_appointments, view_client_appointments, cancel_appointment
+from appointment_service import view_client_past, view_client_upcoming, reschedule_appointment, save_appointments, load_appointments, add_appointment, view_all_appointments, cancel_appointment
 
 clients = []
 
@@ -40,7 +40,11 @@ while True:
     elif option == "4":
         update_client(clients)
     elif option == "5":
-        delete_client(clients)
+        new_list = delete_client(appointments, clients)
+        if new_list:
+            print("saving appointments")
+            appointments = new_list
+            save_appointments(appointments)
     elif option == "6":
         new_appointment = add_appointment(clients)
         if new_appointment:

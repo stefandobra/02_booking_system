@@ -3,7 +3,7 @@ import json
 from client_service import search_client
 import datetime
 
-def save_appointments(appointments: list): 
+def save_appointments(appointments: list):
     appointments_dict = []
     for appointment in appointments:
         appointments_dict.append(appointment.__dict__) # using __dict__ to return Appointment attributes as a dictionary
@@ -223,14 +223,3 @@ def reschedule_appointment(appointments: list, clients: list):
                 print(f"\nAppointment rescheduled!")
             else:
                 print("\nAppointment not rescheduled!")
-
-
-
-
-
-
-    
-
-
-
-    
