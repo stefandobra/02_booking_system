@@ -77,14 +77,16 @@ def view_all_appointments(appointments: list, clients: list):
         print("\nNo appointments saved")
         return
     print("\n--- Appointment list ---")
-    for i, appt in enumerate(appointments, start=1):
+    i = 1
+    for appt in appointments:
         client_id = appt.client_id
         date_time = datetime.datetime.strptime(appt.datetime, '%Y-%m-%dT%H:%M:%S')
         date_and_time = datetime.datetime.strftime(date_time, 'Day: %d/%m/%Y Time: %H:%M')
         for client in clients:
-            if client.id == client_id:
+            if client.id == client_id and date_time > datetime.datetime.today():
                 print(f"{i}. {date_and_time} - {client.first_name} {client.last_name} - {appt.treatment} with {appt.therapist_name}")
-
+                i += 1
+                
 def view_client_appointments(appointments: list, clients: list):
     if not appointments:
         print("\nNo appointments saved")
