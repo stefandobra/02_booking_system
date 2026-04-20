@@ -82,9 +82,10 @@ def view_all_appointments(appointments: list, clients: list):
 def view_client_appointments(appointments: list, clients: list):
     if not appointments:
         print("\nNo appointments saved")
-        return
+        return []
     found = False
     i = 1
+    client_appointments = []
     client_to_view = search_client(clients)
     if client_to_view:
         client_id = client_to_view.id
@@ -97,9 +98,51 @@ def view_client_appointments(appointments: list, clients: list):
                 date_and_time = datetime.datetime.strftime(date_time, 'Day: %d/%m/%Y Time: %H:%M')
                 print(f"{i}. {date_and_time} - {client_to_view.first_name} {client_to_view.last_name} - {appt.treatment} with {appt.therapist_name}")
                 i += 1
+                client_appointments.append(appt)
         if not found:
             print(f"\n--- No appointments for {client_to_view.first_name} {client_to_view.last_name}")
+    return client_appointments
 
+def cancel_appointment(appointments: list, clients: list):
+    client_appointments = view_client_appointments(appointments, clients)
+
+    if client_appointments:
+        no_of_appointments = len(client_appointments)
+        
+        while True:
+            appointment_to_cancel = input(f"\nPlease select appointment to cancel 1-{no_of_appointments}: ").strip()
+            try:
+                option = int(appointment_to_cancel)
+                if option > no_of_appointments:
+                    print(f"\nInvalid selection. Please select from 1-{no_of_appointments}!")
+                else:
+                    appointment_to_cancel_string = client_appointments[option - 1]
+                    client_id = client_appointments[0].client_id
+                    client = next((c for c in clients if c.id == client_id), None)
+                    if client:
+                        date_time = datetime.datetime.strptime(appointment_to_cancel_string.datetime, '%Y-%m-%dT%H:%M:%S')
+                        date_and_time = datetime.datetime.strftime(date_time, 'Day: %d/%m/%Y Time: %H:%M')
+                        print(f"\n{appointment_to_cancel_string.treatment} with {appointment_to_cancel_string.therapist_name} for {client.first_name} {client.last_name} on {date_and_time}")
+                    while True:
+                        confirmation = input(f"\nAre you sure you want to cancel this appointment Y/N:").strip().upper()
+                        if confirmation not in ["Y", "N"]:
+                            print(f"\nPlease select Y/N")
+                        else:
+                            break
+                    if confirmation == "Y":
+                        appointments.remove(appointment_to_cancel_string)
+                        print(f"\nAppointment cancelled")
+                        break
+                    else:
+                        print("\nAppointment not cancelled!")
+                        break
+            except ValueError:
+                print(f"\nInvalid selection. Please use numbers from 1-{no_of_appointments}: ")
+        
+
+
+
+    
 
 
 
