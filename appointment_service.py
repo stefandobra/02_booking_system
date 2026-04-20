@@ -107,38 +107,43 @@ def cancel_appointment(appointments: list, clients: list):
     client_appointments = view_client_appointments(appointments, clients)
 
     if client_appointments:
-        no_of_appointments = len(client_appointments)
+        selected_appointment = select_appointment(client_appointments)
+        if selected_appointment:
+            client_id = selected_appointment.client_id
+            client = next((c for c in clients if c.id == client_id), None)
+            if client:
+                date_time = datetime.datetime.strptime(selected_appointment.datetime, '%Y-%m-%dT%H:%M:%S')
+                date_and_time = datetime.datetime.strftime(date_time, 'Day: %d/%m/%Y Time: %H:%M')
+                print(f"\n{selected_appointment.treatment} with {selected_appointment.therapist_name} for {client.first_name} {client.last_name} on {date_and_time}")
+            while True:
+                confirmation = input(f"\nAre you sure you want to cancel this appointment Y/N:").strip().upper()
+                if confirmation not in ["Y", "N"]:
+                    print(f"\nPlease select Y/N")
+                else:
+                    break
+            if confirmation == "Y":
+                appointments.remove(selected_appointment)
+                print(f"\nAppointment cancelled")
+            else:
+                print("\nAppointment not cancelled!")
         
+def select_appointment(appointments: list):
+    selected_appointment = None
+    if appointments:
         while True:
-            appointment_to_cancel = input(f"\nPlease select appointment to cancel 1-{no_of_appointments}: ").strip()
+            appointment_to_cancel = input(f"\nPlease select appointment 1-{len(appointments)}: ").strip()
             try:
                 option = int(appointment_to_cancel)
-                if option > no_of_appointments:
-                    print(f"\nInvalid selection. Please select from 1-{no_of_appointments}!")
+                if option > len(appointments):
+                    print(f"\nInvalid selection. Please select from 1-{len(appointments)}!")
                 else:
-                    appointment_to_cancel_string = client_appointments[option - 1]
-                    client_id = client_appointments[0].client_id
-                    client = next((c for c in clients if c.id == client_id), None)
-                    if client:
-                        date_time = datetime.datetime.strptime(appointment_to_cancel_string.datetime, '%Y-%m-%dT%H:%M:%S')
-                        date_and_time = datetime.datetime.strftime(date_time, 'Day: %d/%m/%Y Time: %H:%M')
-                        print(f"\n{appointment_to_cancel_string.treatment} with {appointment_to_cancel_string.therapist_name} for {client.first_name} {client.last_name} on {date_and_time}")
-                    while True:
-                        confirmation = input(f"\nAre you sure you want to cancel this appointment Y/N:").strip().upper()
-                        if confirmation not in ["Y", "N"]:
-                            print(f"\nPlease select Y/N")
-                        else:
-                            break
-                    if confirmation == "Y":
-                        appointments.remove(appointment_to_cancel_string)
-                        print(f"\nAppointment cancelled")
-                        break
-                    else:
-                        print("\nAppointment not cancelled!")
-                        break
+                    selected_appointment = appointments[option - 1]
+                    break
             except ValueError:
-                print(f"\nInvalid selection. Please use numbers from 1-{no_of_appointments}: ")
-        
+                print(f"\nInvalid selection. Please use numbers from 1-{len(appointments)}: ")
+
+    return selected_appointment
+
 
 
 
