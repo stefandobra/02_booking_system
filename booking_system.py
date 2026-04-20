@@ -1,7 +1,7 @@
 from client import Client
 from client_service import add_client, save_clients, load_clients, update_client, search_client, view_clients, delete_client
 from appointment import Appointment
-from appointment_service import reschedule_appointment, save_appointments, load_appointments, add_appointment, view_all_appointments, view_client_appointments, cancel_appointment
+from appointment_service import view_client_upcoming, reschedule_appointment, save_appointments, load_appointments, add_appointment, view_all_appointments, view_client_appointments, cancel_appointment
 
 clients = []
 
@@ -13,10 +13,11 @@ def display_menu():
     print("4. Update client")
     print("5. Delete client")
     print("6. Add appointment")
-    print("7. View all appointments")
-    print("8. View client appointments")
-    print("9. Cancel appointment")
-    print("10. Reschedule appointment")
+    print("7. View all upcoming appointments")
+    print("8. View client upcoming appointments")
+    print("9. View client past appointments")
+    print("10. Cancel appointment")
+    print("11. Reschedule appointment")
     print("0. Exit")
 
         
@@ -49,10 +50,10 @@ while True:
     elif option == "7":
         view_all_appointments(appointments, clients)
     elif option == "8":
-        view_client_appointments(appointments, clients)
-    elif option == "9":
-        cancel_appointment(appointments, clients)
+        view_client_upcoming(appointments, clients)
     elif option == "10":
+        cancel_appointment(appointments, clients)
+    elif option == "11":
         reschedule_appointment(appointments, clients)
     elif option == "0":
         print("Have a good day!")
@@ -60,3 +61,12 @@ while True:
         save_appointments(appointments)
         break
 
+# print(f"\nWhich appointments do you want to view for {client_to_view.first_name} {client_to_view.last_name}")
+#                     print(f"1. Current appointments\n2. Past appointments")
+
+#                     while True:
+#                         option = input("Please select an option: ").strip()
+#                         if option in ["1", "2"]:
+#                             break
+#                         else:
+#                             print("Invalid selection Please enter '1' or '2'")

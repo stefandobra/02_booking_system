@@ -111,6 +111,30 @@ def view_client_appointments(appointments: list, clients: list):
             print(f"\n--- No appointments for {client_to_view.first_name} {client_to_view.last_name}")
     return client_appointments
 
+def view_client_upcoming(appointments: list, clients: list):
+    if not appointments:
+        print("\nNo appointments saved")
+        return
+    found = False
+    i = 1
+    client_appointments = []
+    client_to_view = search_client(clients)
+    if client_to_view:
+        client_id = client_to_view.id
+        for appt in appointments:
+            date_time = datetime.datetime.strptime(appt.datetime, '%Y-%m-%dT%H:%M:%S')
+            date_and_time = datetime.datetime.strftime(date_time, 'Day: %d/%m/%Y Time: %H:%M')
+            if client_id == appt.client_id and date_time > datetime.datetime.today():
+                if not found:
+                    print(f"\n--- Upcoming appointments for {client_to_view.first_name} {client_to_view.last_name} ---")
+                found = True
+                print(f"{i}. {date_and_time} - {client_to_view.first_name} {client_to_view.last_name} - {appt.treatment} with {appt.therapist_name}")
+                i += 1
+        if not found:
+            print(f"\n--- No upcoming appointments for {client_to_view.first_name} {client_to_view.last_name}")
+            return
+
+
 def cancel_appointment(appointments: list, clients: list):
     client_appointments = view_client_appointments(appointments, clients)
 
