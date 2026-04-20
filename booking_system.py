@@ -1,7 +1,7 @@
 from client import Client
 from client_service import add_client, save_clients, load_clients, update_client, search_client, view_clients, delete_client
 from appointment import Appointment
-from appointment_service import view_client_upcoming, reschedule_appointment, save_appointments, load_appointments, add_appointment, view_all_appointments, view_client_appointments, cancel_appointment
+from appointment_service import view_client_past, view_client_upcoming, reschedule_appointment, save_appointments, load_appointments, add_appointment, view_all_appointments, view_client_appointments, cancel_appointment
 
 clients = []
 
@@ -51,6 +51,8 @@ while True:
         view_all_appointments(appointments, clients)
     elif option == "8":
         view_client_upcoming(appointments, clients)
+    elif option == "9":
+        view_client_past(appointments, clients)
     elif option == "10":
         cancel_appointment(appointments, clients)
     elif option == "11":
@@ -60,13 +62,3 @@ while True:
         save_clients(clients)
         save_appointments(appointments)
         break
-
-# print(f"\nWhich appointments do you want to view for {client_to_view.first_name} {client_to_view.last_name}")
-#                     print(f"1. Current appointments\n2. Past appointments")
-
-#                     while True:
-#                         option = input("Please select an option: ").strip()
-#                         if option in ["1", "2"]:
-#                             break
-#                         else:
-#                             print("Invalid selection Please enter '1' or '2'")
