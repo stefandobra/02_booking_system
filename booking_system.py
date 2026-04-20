@@ -75,3 +75,5 @@ while True:
         save_clients(clients)
         save_appointments(appointments)
         break
+    else:
+        print("Wrong input. Please select from available menu items!")
