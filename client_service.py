@@ -17,11 +17,23 @@ def save_clients(clients):
 def load_clients():
     try:
         clients_from_file = []
+        
         with open("data.json", "r") as file:
             data_to_load = json.load(file)
         
         for client in data_to_load["clients"]:
+            appts_to_move = []
+            for appt in client["upcoming_appts"]:
+                date_time = datetime.datetime.strptime(appt["datetime"], '%Y-%m-%dT%H:%M:%S')
+                if date_time < datetime.datetime.today():
+                    appts_to_move.append(appt)
+
+            for appt in appts_to_move:
+                client["upcoming_appts"].remove(appt)
+                client["past_appts"].append(appt)
+            
             clients_from_file.append(Client(**client))
+
         return clients_from_file
 
     except FileNotFoundError:
