@@ -90,10 +90,9 @@ def view_all_appointments(appointments: list, clients: list):
 def view_client_appointments(appointments: list, clients: list):
     if not appointments:
         print("\nNo appointments saved")
-        return []
+        return
     found = False
     i = 1
-    client_appointments = []
     client_to_view = search_client(clients)
     if client_to_view:
         client_id = client_to_view.id
@@ -106,17 +105,18 @@ def view_client_appointments(appointments: list, clients: list):
                 date_and_time = datetime.datetime.strftime(date_time, 'Day: %d/%m/%Y Time: %H:%M')
                 print(f"{i}. {date_and_time} - {client_to_view.first_name} {client_to_view.last_name} - {appt.treatment} with {appt.therapist_name}")
                 i += 1
-                client_appointments.append(appt)
+                
         if not found:
             print(f"\n--- No appointments for {client_to_view.first_name} {client_to_view.last_name}")
-    return client_appointments
+    return 
 
 def view_client_upcoming(appointments: list, clients: list):
     if not appointments:
         print("\nNo appointments saved")
-        return
+        return []
     found = False
     i = 1
+    client_appointments = []
     client_to_view = search_client(clients)
     if client_to_view:
         client_id = client_to_view.id
@@ -129,9 +129,10 @@ def view_client_upcoming(appointments: list, clients: list):
                 found = True
                 print(f"{i}. {date_and_time} - {client_to_view.first_name} {client_to_view.last_name} - {appt.treatment} with {appt.therapist_name}")
                 i += 1
+                client_appointments.append(appt)
         if not found:
             print(f"\n--- No upcoming appointments for {client_to_view.first_name} {client_to_view.last_name}")
-            return
+    return client_appointments
         
 def view_client_past(appointments: list, clients: list):
     if not appointments:
@@ -157,7 +158,7 @@ def view_client_past(appointments: list, clients: list):
 
 
 def cancel_appointment(appointments: list, clients: list):
-    client_appointments = view_client_appointments(appointments, clients)
+    client_appointments = view_client_upcoming(appointments, clients)
 
     if client_appointments:
         selected_appointment = select_appointment(client_appointments)
@@ -201,7 +202,7 @@ def select_appointment(appointments: list):
     return selected_appointment
 
 def reschedule_appointment(appointments: list, clients: list):
-    client_appointments = view_client_appointments(appointments, clients)
+    client_appointments = view_client_upcoming(appointments, clients)
     if client_appointments:
         selected_appointment = select_appointment(client_appointments)
         if selected_appointment:
