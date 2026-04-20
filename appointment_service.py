@@ -116,7 +116,7 @@ def cancel_appointment(appointments: list, clients: list):
                 date_and_time = datetime.datetime.strftime(date_time, 'Day: %d/%m/%Y Time: %H:%M')
                 print(f"\n{selected_appointment.treatment} with {selected_appointment.therapist_name} for {client.first_name} {client.last_name} on {date_and_time}")
             while True:
-                confirmation = input(f"\nAre you sure you want to cancel this appointment Y/N:").strip().upper()
+                confirmation = input(f"\nAre you sure you want to cancel this appointment Y/N?").strip().upper()
                 if confirmation not in ["Y", "N"]:
                     print(f"\nPlease select Y/N")
                 else:
@@ -143,6 +143,31 @@ def select_appointment(appointments: list):
                 print(f"\nInvalid selection. Please use numbers from 1-{len(appointments)}: ")
 
     return selected_appointment
+
+def reschedule_appointment(appointments: list, clients: list):
+    client_appointments = view_client_appointments(appointments, clients)
+    if client_appointments:
+        selected_appointment = select_appointment(client_appointments)
+        if selected_appointment:
+            client_id = selected_appointment.client_id
+            client = next((c for c in clients if c.id == client_id), None)
+            if client:
+                date_time = datetime.datetime.strptime(selected_appointment.datetime, '%Y-%m-%dT%H:%M:%S')
+                date_and_time = datetime.datetime.strftime(date_time, 'Day: %d/%m/%Y Time: %H:%M')
+                print(f"\n{selected_appointment.treatment} with {selected_appointment.therapist_name} for {client.first_name} {client.last_name} on {date_and_time}")
+            while True:
+                confirmation = input(f"\nReschedule this appointment Y/N?").strip().upper()
+                if confirmation not in ["Y", "N"]:
+                    print(f"\nPlease select Y/N")
+                else:
+                    break
+            if confirmation == "Y":
+                selected_appointment.datetime = validate_datetime()
+                print(f"\nAppointment rescheduled!")
+            else:
+                print("\nAppointment not rescheduled!")
+
+
 
 
 
