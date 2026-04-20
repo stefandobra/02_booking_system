@@ -127,8 +127,11 @@ def cancel_appointment(appointments: list, clients: list):
                     print(f"\nPlease select Y/N")
                 else:
                     break
-            if confirmation == "Y":
+            if confirmation == "Y" and client:
                 appointments.remove(selected_appointment)
+                appt_to_remove = next((appt for appt in client.upcoming_appts if appt["id"] == selected_appointment.id), None)
+                if appt_to_remove: 
+                    client.upcoming_appts.remove(appt_to_remove)
                 print(f"\nAppointment cancelled")
             else:
                 print("\nAppointment not cancelled!")
