@@ -2,6 +2,7 @@ from client import Client
 from client_service import add_client, save_clients, load_clients, update_client, search_client, view_clients, delete_client
 from appointment import Appointment
 from appointment_service import view_client_past, view_client_upcoming, reschedule_appointment, save_appointments, load_appointments, add_appointment, view_all_appointments, cancel_appointment
+from ai_service import generate_ai_summary
 
 clients = []
 
@@ -18,6 +19,7 @@ def display_menu():
     print("9. View client past appointments")
     print("10. Cancel appointment")
     print("11. Reschedule appointment")
+    print("12. AI summary")
     print("0. Exit")
 
         
@@ -42,7 +44,6 @@ while True:
     elif option == "5":
         new_list = delete_client(appointments, clients)
         if new_list:
-            print("saving appointments")
             appointments = new_list
             save_appointments(appointments)
     elif option == "6":
@@ -61,6 +62,14 @@ while True:
         cancel_appointment(appointments, clients)
     elif option == "11":
         reschedule_appointment(appointments, clients)
+    elif option == "12":
+        try:
+            summary = generate_ai_summary(appointments, clients)
+            print(summary)
+        except IndexError:
+            print("AI returned empty response")
+        except AttributeError:
+            print("AI response didn't contain readable text")
     elif option == "0":
         print("Have a good day!")
         save_clients(clients)
