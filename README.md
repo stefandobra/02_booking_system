@@ -1,6 +1,6 @@
 # 02 Booking System
 
-A command-line client booking system built in Python as part of a portfolio project series targeting a £90k-£100k+ AI/tech role in London.
+A command-line client booking system built in Python as part of a portfolio project series demonstrating AI and full-stack development skills.
 
 ## Features
 
